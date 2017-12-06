@@ -6,17 +6,20 @@ import pl.sdacademy.animals.Animal;
 public abstract class Bear implements Animal {
 
     private int weight;
+    private boolean isAlive;
 
     public Bear(int weight) {
         this.weight = weight;
+        this.isAlive = true;
     }
 
     @Override
     public boolean isAlive() {
-        return false;
+        return isAlive;
     }
 
-    public void eat() { }
+    public void eat() {
+    }
 
     @Override
     public int getWeight() {

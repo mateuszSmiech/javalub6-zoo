@@ -1,5 +1,3 @@
-# javalub4-zoo
-
 Naszym zadaniem będzie stworzenie aplikacji, która będzie modelowała zoo. Będziemy krok po kroku rozbudowywali aplikację o kolejne elementy, pamiętając o technikach i dobrych zasadach, których nauczyliśmy się do tej pory. Logikę aplikacji będziemy tworzyli korzystając z TDD.
 
 Stworzyliśmy odpowiednią hierarchię zwierząt. Jako kierownicy zoo będziemy sprawdzali czy każde zwierzę (Animal) żyje oraz ważyli je od czasu do czasu w ramach rutynowych badań.
@@ -22,7 +20,7 @@ Następnie repozytorium sklonujemy przy pomocy IntelliJ.
 Wybieracie opcję New -> Project From Version Control -> GitHub. Logujecie się na swoje konto i wybieracie javalub4-zoo. Jeśli SDK nie jest ustawione (pliki dziwnie się wyświetlają w drzewie projektu), wybieracie Java 1.8. 
 Na dolnej belce powinna pojawić się informacja Non-managed pom.xml file found. Klikając na to wyświetli się okienko z wiadomością 
 
-Non-managed pom.xml file found: /home/krystian/code/sda/javalub4-zoo/pom.xml 
+Non-managed pom.xml file found: /home/krystian/code/sda/javalub-zoo/pom.xml 
 
 Add as Maven Project or Disable notification
 
