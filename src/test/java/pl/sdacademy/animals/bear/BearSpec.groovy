@@ -34,9 +34,9 @@ class BearSpec extends Specification {
     def "Bear should not be alive if it has eaten within more than 10 days"() {
         given:
         def clock = Mock(BearClock)
-        clock.currentTime >> DateTime.now().plusDays(11)
         def bear = new BlackBear(3, clock)
-        bear.eat()
+        bear.eat(2)
+        clock.currentTime >> DateTime.now().plusDays(11)
 
         when:
         def result = bear.isAlive()
@@ -51,7 +51,7 @@ class BearSpec extends Specification {
         Bear bear = new BlackBear(weight)
 
         when:
-        int result = bear.eat(3)
+        double result = bear.eat(3)
 
         then:
         result == 6
