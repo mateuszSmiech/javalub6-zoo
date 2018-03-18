@@ -98,16 +98,16 @@ class BearSpec extends Specification {
 
     def "Bear is resurrected when he gets food"() {
         given:
-        int weight = 0
-        Bear bear = new BlackBear(weight)
+        def clock = Mock(BearClock)
+        clock.currentTime >> DateTime.now().plusDays(11)
+        def bear = new BlackBear(3, clock)
         bear.eat(2)
 
         when:
-        boolean result = bear.isAlive()
+        def result = bear.isAlive()
 
         then:
         result
     }
-
 
 }

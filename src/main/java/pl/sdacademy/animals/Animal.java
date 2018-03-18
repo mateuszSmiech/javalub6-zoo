@@ -5,4 +5,6 @@ public interface Animal {
     boolean isAlive();
 
     double getWeight();
+
+
 }

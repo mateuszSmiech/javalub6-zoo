@@ -2,6 +2,8 @@ package pl.sdacademy.animals.bear;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import pl.sdacademy.animals.Animal;
 import pl.sdacademy.animals.time.BearClock;
 
@@ -12,6 +14,9 @@ public abstract class Bear implements Animal {
     private boolean isAlive;
     private DateTime lastMealTime;
     private BearClock clock;
+    private String hibernatedFrom;
+    private String hibernatedTo;
+    private DateTime clockVar;
 
     public Bear(double weight) {
         this.weight = weight;
@@ -25,21 +30,29 @@ public abstract class Bear implements Animal {
         this.clock = clock;
     }
 
+    public Bear(DateTime clockVar, String hibernatedFrom, String hibernatedTo) {
+        this.clockVar = clockVar;
+        this.hibernatedFrom = hibernatedFrom;
+        this.hibernatedTo = hibernatedTo;
+    }
+
     @Override
     public boolean isAlive() {
-        if (weight > 0 && hasBearEatenIn10Days()) {
+        if (hasBearEatenIn10Days()) {
             return isAlive;
         } else {
             return isAlive = false;
         }
-        //return new Duration(lastMealTime, clock.getCurrentTime()).isShorterThan(Duration.standardDays(10));
-
     }
 
-    public double eat(int eatenMeal) {
-        weight += eatenMeal;
-        this.lastMealTime = clock.getCurrentTime();
-        return weight;
+    public double eat(int eatenMeal) throws IsHibernatedException {
+        if(isHibernated()){
+            throw new IsHibernatedException();
+        } else {
+            weight += eatenMeal;
+            this.lastMealTime = clock.getCurrentTime();
+            return weight;
+        }
     }
 
     @Override
@@ -58,5 +71,16 @@ public abstract class Bear implements Animal {
 
     private boolean hasBearEatenIn10Days() {
         return new Duration(lastMealTime, clock.getCurrentTime()).isShorterThan(Duration.standardDays(10));
+    }
+
+    private boolean isHibernated() {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+        DateTime fromDate = formatter.parseDateTime(hibernatedFrom);
+        DateTime toDate = formatter.parseDateTime(hibernatedTo);
+        if (clockVar.isAfter(fromDate) && clockVar.isBefore(toDate)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
