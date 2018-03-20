@@ -2,56 +2,40 @@ package pl.sdacademy.animals.bear;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import pl.sdacademy.animals.Animal;
 import pl.sdacademy.animals.time.BearClock;
+import pl.sdacademy.animals.time.Clock;
 
 
 public abstract class Bear implements Animal {
 
     private double weight;
-    private boolean isAlive;
     private DateTime lastMealTime;
-    private BearClock clock;
-    private String hibernatedFrom;
-    private String hibernatedTo;
-    private DateTime clockVar;
+    private Clock clock;
+    DateTime hibernatedFrom;
+    DateTime hibernatedTo;
 
     public Bear(double weight) {
         this.weight = weight;
-        this.isAlive = true;
         this.clock = new BearClock();
     }
 
-    public Bear(double weight, BearClock clock) {
+    public Bear(double weight, Clock clock) {
         this.weight = weight;
-        this.isAlive = true;
         this.clock = clock;
-    }
-
-    public Bear(DateTime clockVar, String hibernatedFrom, String hibernatedTo) {
-        this.clockVar = clockVar;
-        this.hibernatedFrom = hibernatedFrom;
-        this.hibernatedTo = hibernatedTo;
     }
 
     @Override
     public boolean isAlive() {
-        if (hasBearEatenIn10Days()) {
-            return isAlive;
-        } else {
-            return isAlive = false;
-        }
+        return hasBearEatenIn10Days();
     }
 
-    public double eat(int eatenMeal) throws IsHibernatedException {
-        if(isHibernated()){
+    public void eat(int eatenMeal) throws IsHibernatedException {
+        if (isHibernated()) {
             throw new IsHibernatedException();
         } else {
             weight += eatenMeal;
             this.lastMealTime = clock.getCurrentTime();
-            return weight;
         }
     }
 
@@ -74,13 +58,22 @@ public abstract class Bear implements Animal {
     }
 
     private boolean isHibernated() {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
-        DateTime fromDate = formatter.parseDateTime(hibernatedFrom);
-        DateTime toDate = formatter.parseDateTime(hibernatedTo);
-        if (clockVar.isAfter(fromDate) && clockVar.isBefore(toDate)) {
+
+        if (clock.getCurrentTime().isAfter(hibernatedFrom) && clock.getCurrentTime().isBefore(hibernatedTo)) {
             return true;
         } else {
             return false;
         }
+    }
+
+    private boolean monthComparator(DateTime currentClock, DateTime from, DateTime to) {
+        if (currentClock.getMonthOfYear() == from.getMonthOfYear()) {
+            if (currentClock.getDayOfMonth() > from.getDayOfMonth() && currentClock.getDayOfMonth() > to.getDayOfMonth()) {
+                return true;
+            }
+        } else if (currentClock.getMonthOfYear() > from.getMonthOfYear() && currentClock.getMonthOfYear() < to.getMonthOfYear()) {
+            return true;
+        }
+        return false;
     }
 }
